@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 public class GameWindow extends JFrame {
 	
 	GamePanel gp = new GamePanel();
+	GameLoop loop = new GameLoop(gp);
 
 	public GameWindow() {
 
@@ -15,6 +16,6 @@ public class GameWindow extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
-		gp.startGameThread();
+		loop.startGameThread();
 	}
 }
