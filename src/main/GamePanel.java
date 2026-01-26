@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-public class GamePanel extends JPanel implements Runnable {
+public class GamePanel extends JPanel{
 
 	/*
 	 * Every 2D game boils down to this loop: while (game is running) {
@@ -30,7 +30,6 @@ public class GamePanel extends JPanel implements Runnable {
 	// Snake body = list of positions. Ordered list of Point objects, and each Point
 	// represents a tile position
 	ArrayList<Point> snake = new ArrayList<>();
-	Thread gameThread;
 
 	public GamePanel() {
 
@@ -41,12 +40,6 @@ public class GamePanel extends JPanel implements Runnable {
 		setBackground(Color.BLACK);
 		setFocusable(true);
 		addKeyListener(new KeyHandler(this));
-	}
-
-	// Swing does not give you a game loop, you must create one
-	public void startGameThread() {
-		gameThread = new Thread(this);
-		gameThread.start();
 	}
 
 	public void spawnFood() {
@@ -67,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	// update modifies data
-	private void update() {
+	void update() {
 
 		if (gameOver)
 			return;
@@ -137,31 +130,6 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameOver) {
 			g.setColor(Color.RED);
 			g.drawString("GAME OVER", SCREEN_WIDTH / 2 - 40, SCREEN_HEIGHT / 2);
-		}
-	}
-
-	@Override
-	public void run() {
-
-		// This is the formula for the game loop
-		final double fps = 10;
-		double drawInterval = 1000000000 / fps;
-		double delta = 0;
-		long lastTime = System.nanoTime();
-		long currentTime;
-
-		while (gameThread != null) {
-
-			currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / drawInterval;
-			lastTime = currentTime;
-
-			if (delta >= 1) {
-
-				update();
-				repaint();
-				delta--;
-			}
 		}
 	}
 
