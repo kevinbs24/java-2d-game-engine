@@ -34,7 +34,7 @@ public class GameLoop implements Runnable {
 
 			if (delta >= 1) {
 
-				gp.update();
+				gp.state.update();
 				gp.repaint();
 				delta--;
 			}

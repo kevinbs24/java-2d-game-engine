@@ -4,18 +4,22 @@ import javax.swing.JFrame;
 
 public class GameWindow extends JFrame {
 
-	GamePanel gp = new GamePanel();
-	GameLoop loop = new GameLoop(gp);
+    GameState state;
+    GamePanel gp;
+    GameLoop loop;
 
-	public GameWindow() {
+    public GameWindow() {
+        state = new GameState();
+        gp = new GamePanel(state);
+        loop = new GameLoop(gp);
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
-		add(gp);
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        add(gp);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
 
-		loop.startGameThread();
-	}
+        loop.startGameThread();
+    }
 }

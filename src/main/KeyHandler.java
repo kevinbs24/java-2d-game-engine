@@ -21,14 +21,14 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		//Input does NOT move the snake, it only changes direction.
-		if (e.getKeyCode() == KeyEvent.VK_W && gp.direction != 'D')
-			gp.direction = 'U';
-		if (e.getKeyCode() == KeyEvent.VK_S && gp.direction != 'U')
-			gp.direction = 'D';
-		if (e.getKeyCode() == KeyEvent.VK_A && gp.direction != 'R')
-			gp.direction = 'L';
-		if (e.getKeyCode() == KeyEvent.VK_D && gp.direction != 'L')
-			gp.direction = 'R';
+		if (e.getKeyCode() == KeyEvent.VK_W && gp.state.getDirection() != 'D')
+			gp.state.setDirection('U');
+		if (e.getKeyCode() == KeyEvent.VK_S && gp.state.getDirection() != 'U')
+			gp.state.setDirection('D');
+		if (e.getKeyCode() == KeyEvent.VK_A && gp.state.getDirection() != 'R')
+			gp.state.setDirection('L');
+		if (e.getKeyCode() == KeyEvent.VK_D && gp.state.getDirection() != 'L')
+			gp.state.setDirection('R');
 	}
 
 	@Override
