@@ -48,6 +48,10 @@ public class GameState {
 			}
 		}
 	}
+	
+	public boolean isGameOver() {
+	    return gameOver;
+	}
 
 	void draw(Graphics g) {
 

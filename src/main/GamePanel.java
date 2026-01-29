@@ -26,6 +26,10 @@ public class GamePanel extends JPanel{
 		setFocusable(true);
 		addKeyListener(new KeyHandler(this));
 	}
+	
+	public void resetGame() {
+	    this.state = new GameState();
+	}
 
 	// paint displays data
 	@Override

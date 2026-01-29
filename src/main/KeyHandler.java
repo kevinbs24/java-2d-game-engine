@@ -29,6 +29,9 @@ public class KeyHandler implements KeyListener {
 			gp.state.setDirection('L');
 		if (e.getKeyCode() == KeyEvent.VK_D && gp.state.getDirection() != 'L')
 			gp.state.setDirection('R');
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && gp.state.isGameOver()) {
+		    gp.resetGame();
+		}
 	}
 
 	@Override
