@@ -1,138 +1,105 @@
 package main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class GameState {
 
-	private final int TILE_SIZE = 25;
-	private final int SCREEN_WIDTH = 600;
-	private final int SCREEN_HEIGHT = 600;
+    public static final int TILE_SIZE = 25;
+    public static final int SCREEN_WIDTH = 600;
+    public static final int SCREEN_HEIGHT = 600;
 
-	private boolean gameOver = false;
+    private boolean gameOver = false;
+    private char direction = 'R';
 
-	private char direction = 'R';
+    private Point food;
+    private final ArrayList<Point> snake = new ArrayList<>();
+    private final Random random = new Random();
 
-	private Point head, newHead, food;
+    public GameState() {
+        snake.add(new Point(5, 5));
+        spawnFood();
+    }
+    
+    public void reset() {
+        gameOver = false;
+        direction = 'R';
+        snake.clear();
+        snake.add(new Point(5, 5));
+        spawnFood();
+    }
 
-	Random random = new Random();
+    public void update() {
+        if (gameOver) return;
 
-	// Snake body = list of positions. Ordered list of Point objects, and each Point
-	// represents a tile position
-	ArrayList<Point> snake = new ArrayList<>();
+        Point head = snake.get(0);
+        Point newHead = new Point(head);
 
-	public GameState() {
+        switch (direction) {
+            case 'U' -> newHead.y--;
+            case 'D' -> newHead.y++;
+            case 'L' -> newHead.x--;
+            case 'R' -> newHead.x++;
+        }
 
-		snake.add(new Point(5, 5)); // head
+        // Wall collision
+        if (newHead.x < 0 || newHead.y < 0 ||
+            newHead.x >= SCREEN_WIDTH / TILE_SIZE ||
+            newHead.y >= SCREEN_HEIGHT / TILE_SIZE) {
+            gameOver = true;
+            return;
+        }
 
-		spawnFood();
-	}
+        // Self collision
+        for (Point p : snake) {
+            if (newHead.equals(p)) {
+                gameOver = true;
+                return;
+            }
+        }
 
-	public void spawnFood() {
+        snake.add(0, newHead);
 
-		final int maxX = SCREEN_WIDTH / TILE_SIZE;
-		final int maxY = SCREEN_HEIGHT / TILE_SIZE;
+        if (newHead.equals(food)) {
+            spawnFood();
+        } else {
+            snake.remove(snake.size() - 1);
+        }
+    }
 
-		while (true) {
+    private void spawnFood() {
+        int maxX = SCREEN_WIDTH / TILE_SIZE;
+        int maxY = SCREEN_HEIGHT / TILE_SIZE;
 
-			Point p = (new Point(random.nextInt(maxX), random.nextInt(maxY)));
+        while (true) {
+            Point p = new Point(random.nextInt(maxX), random.nextInt(maxY));
+            if (!snake.contains(p)) {
+                food = p;
+                break;
+            }
+        }
+    }
 
-			if (!snake.contains(p)) {
+    // ===== Getters / setters =====
 
-				food = p;
-				break;
-			}
-		}
-	}
-	
-	public boolean isGameOver() {
-	    return gameOver;
-	}
+    public ArrayList<Point> getSnake() {
+        return snake;
+    }
 
-	void draw(Graphics g) {
+    public Point getFood() {
+        return food;
+    }
 
-		// food
-		g.setColor(Color.RED);
-		g.fillRect(food.x * TILE_SIZE, food.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    public char getDirection() {
+        return direction;
+    }
 
-		// snake
-		g.setColor(Color.GREEN);
-		for (Point p : snake) {
-			g.fillRect(p.x * TILE_SIZE, p.y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		}
+    public void setDirection(char direction) {
+        this.direction = direction;
+    }
 
-		if (gameOver) {
-			g.setColor(Color.RED);
-			g.drawString("GAME OVER", SCREEN_WIDTH / 2 - 40, SCREEN_HEIGHT / 2);
-		}
-	}
-
-	// update modifies data
-	void update() {
-
-		if (gameOver)
-			return;
-
-		head = snake.get(0);
-		newHead = new Point(head);
-
-		switch (getDirection()) {
-		case 'U':
-			newHead.y--;
-			break;
-		case 'D':
-			newHead.y++;
-			break;
-		case 'L':
-			newHead.x--;
-			break;
-		case 'R':
-			newHead.x++;
-			break;
-		}
-
-		for (int i = 1; i < snake.size(); i++) {
-			if (newHead.equals(snake.get(i))) {
-				gameOver = true;
-				return;
-			}
-		}
-
-		if (newHead.x < 0 || newHead.y < 0 || newHead.x >= SCREEN_WIDTH / TILE_SIZE
-				|| newHead.y >= SCREEN_HEIGHT / TILE_SIZE) {
-			gameOver = true;
-			return;
-		}
-
-		boolean ateFood = newHead.equals(food);
-
-		snake.add(0, newHead);
-
-		if (ateFood) {
-
-			spawnFood();
-		} else {
-			snake.remove(snake.size() - 1);
-		}
-	}
-
-	public int getScreenWidth() {
-		return SCREEN_WIDTH;
-	}
-
-	public int getScreenHeight() {
-		return SCREEN_HEIGHT;
-	}
-
-	public char getDirection() {
-		return direction;
-	}
-
-	public void setDirection(char direction) {
-		this.direction = direction;
-	}
+    public boolean isGameOver() {
+        return gameOver;
+    }
 }

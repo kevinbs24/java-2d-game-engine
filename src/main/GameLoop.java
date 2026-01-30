@@ -2,42 +2,38 @@ package main;
 
 public class GameLoop implements Runnable {
 
-	Thread gameThread;
-	GamePanel gp;
+    private final GameState state;
+    private final GamePanel panel;
+    private Thread thread;
 
-	public GameLoop(GamePanel gp) {
+    public GameLoop(GameState state, GamePanel panel) {
+        this.state = state;
+        this.panel = panel;
+    }
 
-		this.gp = gp;
-	}
+    public void start() {
+        thread = new Thread(this);
+        thread.start();
+    }
 
-	// Swing does not give you a game loop, you must create one
-	public void startGameThread() {
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
+    @Override
+    public void run() {
+        final double fps = 10;
+        final double interval = 1_000_000_000 / fps;
+        double delta = 0;
 
-	@Override
-	public void run() {
+        long last = System.nanoTime();
 
-		// This is the formula for the game loop
-		final double fps = 10;
-		double drawInterval = 1000000000 / fps;
-		double delta = 0;
-		long lastTime = System.nanoTime();
-		long currentTime;
+        while (thread != null) {
+            long now = System.nanoTime();
+            delta += (now - last) / interval;
+            last = now;
 
-		while (gameThread != null) {
-
-			currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / drawInterval;
-			lastTime = currentTime;
-
-			if (delta >= 1) {
-
-				gp.state.update();
-				gp.repaint();
-				delta--;
-			}
-		}
-	}
+            if (delta >= 1) {
+                state.update();
+                panel.repaint();
+                delta--;
+            }
+        }
+    }
 }

@@ -4,39 +4,27 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-	
-	GamePanel gp;
-	
-	public KeyHandler(GamePanel gp) {
-		
-		this.gp = gp;
-	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
+    private final GameState state;
 
-	}
+    public KeyHandler(GameState state) {
+        this.state = state;
+    }
 
-	@Override
-	public void keyPressed(KeyEvent e) {
+    @Override
+    public void keyPressed(KeyEvent e) {
+        char d = state.getDirection();
 
-		//Input does NOT move the snake, it only changes direction.
-		if (e.getKeyCode() == KeyEvent.VK_W && gp.state.getDirection() != 'D')
-			gp.state.setDirection('U');
-		if (e.getKeyCode() == KeyEvent.VK_S && gp.state.getDirection() != 'U')
-			gp.state.setDirection('D');
-		if (e.getKeyCode() == KeyEvent.VK_A && gp.state.getDirection() != 'R')
-			gp.state.setDirection('L');
-		if (e.getKeyCode() == KeyEvent.VK_D && gp.state.getDirection() != 'L')
-			gp.state.setDirection('R');
-		if (e.getKeyCode() == KeyEvent.VK_ENTER && gp.state.isGameOver()) {
-		    gp.resetGame();
-		}
-	}
+        if (e.getKeyCode() == KeyEvent.VK_W && d != 'D') state.setDirection('U');
+        if (e.getKeyCode() == KeyEvent.VK_S && d != 'U') state.setDirection('D');
+        if (e.getKeyCode() == KeyEvent.VK_A && d != 'R') state.setDirection('L');
+        if (e.getKeyCode() == KeyEvent.VK_D && d != 'L') state.setDirection('R');
 
-	@Override
-	public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && state.isGameOver()) {
+            state.reset();
+        }
+    }
 
-	}
-
+    @Override public void keyTyped(KeyEvent e) {}
+    @Override public void keyReleased(KeyEvent e) {}
 }
