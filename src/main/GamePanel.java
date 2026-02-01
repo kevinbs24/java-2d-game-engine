@@ -3,6 +3,7 @@ package main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -28,14 +29,21 @@ public class GamePanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
 		
-		state.paddle.draw(g);
-
-		state.ball.draw(g);
-
-		if (state.isGameOver()) {
+		if (state.ball.gameOver == true) {
 			g.setColor(Color.RED);
 			g.drawString("GAME OVER", 260, 300);
+		}
+		
+		state.paddle.draw(g);
+		state.ball.draw(g);
+		
+		for (Brick b : state.bricks) {
+		    if (!b.destroyed) {
+		        g.setColor(Color.ORANGE);
+		        g.fillRect(b.x, b.y, b.width, b.height);
+		    }
 		}
 	}
 

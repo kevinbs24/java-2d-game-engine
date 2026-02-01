@@ -7,7 +7,7 @@ public class Paddle {
     public int x, y;
     public int width = 80;
     public int length = 20;
-    public int speed = 6;
+    public int speed = 10;
 
     public Paddle(int x, int y) {
         this.x = x;
@@ -22,11 +22,20 @@ public class Paddle {
         x += speed;
     }
     
-    public void draw(Graphics g) {
+    public void checkWallCollision() {
+		if (x <= 0)
+			x = 0;
+		if (x + width >= 600)
+			x = 600 - width;
+	}
+    
+    public void draw(Graphics g2) {
     	
-    	g.setColor(Color.BLUE);
-		g.fillRect(x, y, width, length);
+    	g2.setColor(Color.BLUE);
+		g2.fillRect(x, y, width, length);
     }
 
-    public void update() {}
+    public void update() {
+    	checkWallCollision();
+    }
 }
