@@ -1,33 +1,53 @@
-# Snake (Java / Swing)
+# Java 2D Game Engine (Learning Series)
 
-A classic Snake game built from scratch in Java using Swing.
+A Java-based 2D game engine built from scratch using Swing.  
+This repository documents the step-by-step evolution of core game systems
+through small, complete games.
 
-## Features
-- Fixed-timestep game loop
-- Grid-based movement system
-- Collision detection (walls & self)
-- Restartable game state
-- Sprite-based rendering
+---
+
+## Current Stage: Breakout (v0.4)
+
+Breakout is used to introduce:
+- Continuous movement
+- Velocity vectors
+- Collision detection
+- Paddle physics
+- Multi-entity state management
+
+---
+
+## Completed Modules
+
+### Snake (v0.1–v0.3)
+- Grid-based movement
+- Game loop separation
+- State-driven architecture
+- Input handling
+- Reset and game over flow
+
+### Breakout (v0.4 – In Progress)
+- Paddle movement
+- Ball physics
+- Wall collisions
+- Paddle collisions
+- Brick system (next)
+
+---
+
+## Planned
+- Breakout polishing (v0.5–0.6)
+- Engine extraction & reuse
+- Zelda-style action RPG (v1.0)
+
+---
 
 ## Controls
-- W A S D — Move
-- ENTER — Restart after Game Over
+- A / D – Move
+- ENTER – Reset (where applicable)
 
-## Version History
-### v1.0
-- Complete gameplay loop
-- Food spawning & growth
-- Collision handling
+---
 
-### v1.1
-- Restart support
-- Sprite-based visuals
-
-## Why This Project
-This project was built to demonstrate understanding of:
-- Game loops
-- State management
-- Input handling
-- Rendering pipelines
-
-These systems are directly reusable in larger 2D games.
+## Goal
+Produce a clean, reusable Java 2D engine capable of supporting
+a full Zelda-style game as version 1.0.
