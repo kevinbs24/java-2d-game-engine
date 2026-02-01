@@ -5,56 +5,73 @@ import java.awt.Graphics;
 import java.util.List;
 
 public class Ball {
-	public boolean gameOver = false;
-	public int x, y;
-	public int size = 12;
-	public int speed = 5;
-	public int dx = speed;
-	public int dy = -speed;
 
-	public Ball(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+    public int x, y;
+    public final int size = 12;
+    private final int speed = 5;
+    private int dx = speed;
+    private int dy = -speed;
 
-	public void update() {
-		x += dx;
-		y += dy;
-	}
+    public boolean gameOver = false;
 
-	public void checkWallCollision() {
-		if (x <= 0 || x + size >= 600)
-			dx *= -1;
-		if (y <= 0)
-			dy *= -1;
-		if (y >= 600)
-			gameOver = true;
-	}
+    public Ball(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-	public void checkPaddleCollision(Paddle p) {
-		if (y + size >= p.y && x + size >= p.x && x <= p.x + p.width) {
-			dy *= -1;
-			y = p.y - size;
-		}
-	}
+    public void reset(int x, int y) {
+        this.x = x;
+        this.y = y;
+        dx = speed;
+        dy = -speed;
+        gameOver = false;
+    }
 
-	public void checkBrickCollisions(List<Brick> bricks) {
-		for (Brick b : bricks) {
-			if (b.destroyed)
-				continue;
+    public void update() {
+        x += dx;
+        y += dy;
+    }
 
-			if (x + size >= b.x && x <= b.x + b.width && y + size >= b.y && y <= b.y + b.height) {
+    public void checkWallCollision() {
+        if (x <= 0 || x + size >= GameState.SCREEN_WIDTH)
+            dx *= -1;
 
-				b.destroyed = true;
-				dy *= -1;
-				break;
-			}
-		}
-	}
+        if (y <= 0)
+            dy *= -1;
 
-	public void draw(Graphics g2) {
+        if (y >= GameState.SCREEN_HEIGHT)
+            gameOver = true;
+    }
 
-		g2.setColor(Color.GREEN);
-		g2.fillOval(x, y, size, size);
-	}
+    public void checkPaddleCollision(Paddle p) {
+        if (y + size >= p.y &&
+            x + size >= p.x &&
+            x <= p.x + p.width &&
+            dy > 0) {
+
+            dy *= -1;
+            y = p.y - size;
+        }
+    }
+
+    public void checkBrickCollisions(List<Brick> bricks) {
+        for (Brick b : bricks) {
+            if (b.destroyed) continue;
+
+            if (x + size >= b.x &&
+                x <= b.x + b.width &&
+                y + size >= b.y &&
+                y <= b.y + b.height) {
+
+                b.destroyed = true;
+                dy *= -1;
+                break;
+            }
+        }
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(Color.GREEN);
+        g.fillOval(x, y, size, size);
+    }
 }

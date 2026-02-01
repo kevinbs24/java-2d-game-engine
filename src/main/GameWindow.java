@@ -16,6 +16,6 @@ public class GameWindow extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
 
-        loop.start();
+        new Thread(loop).start();
     }
 }

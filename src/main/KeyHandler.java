@@ -4,18 +4,23 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-	
-	Paddle paddle;
-	
-	public KeyHandler(Paddle paddle) {
-		
-		this.paddle = paddle;
-	}
+
+    private final GameState state;
+
+    public KeyHandler(GameState state) {
+        this.state = state;
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {
-    	if (e.getKeyCode() == KeyEvent.VK_A) paddle.moveLeft();
-        if (e.getKeyCode() == KeyEvent.VK_D) paddle.moveRight();
+        if (e.getKeyCode() == KeyEvent.VK_A)
+            state.paddle.moveLeft();
+
+        if (e.getKeyCode() == KeyEvent.VK_D)
+            state.paddle.moveRight();
+
+       if (e.getKeyCode() == KeyEvent.VK_ENTER && state.ball.gameOver)
+            state.reset();
     }
 
     @Override public void keyTyped(KeyEvent e) {}
